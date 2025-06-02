@@ -38,10 +38,12 @@ test {
 
 jacocoTestReport {
   reports {
-    xml.enabled true
-    xml.destination file("${buildDir}/jacocoXml")
-    csv.enabled false
-    html.enabled false
+    xml {
+      required.set(true)
+      outputLocation.set(file("${buildDir}/jacocoXml"))
+    }
+    csv.required.set(false)
+    html.required.set(false)
   }
 }
 

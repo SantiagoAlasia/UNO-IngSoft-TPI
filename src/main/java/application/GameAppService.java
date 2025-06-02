@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class GameAppService implements IGameAppService {
-    private static final Logger logger = LogManager.getLogger("GameAppService");
+    private static final Logger LOGGER = LogManager.getLogger("GameAppService");
 
     private final Game game;
 
@@ -28,13 +28,13 @@ public class GameAppService implements IGameAppService {
     }
 
     private void logGameInfo() {
-        logger.info("Game created successfully");
+        LOGGER.info("Game created successfully");
         game.getPlayers().forEach(p -> {
             var joinedCardValues = p.getHandCards()
                 .map(Object::toString)
                 .collect(Collectors.joining(","));
 
-            logger.debug(String.format("Player %s with %s cards => [%s]", p.getName(), p.getTotalCards(), joinedCardValues));
+            LOGGER.debug(String.format("Player %s with %s cards => [%s]", p.getName(), p.getTotalCards(), joinedCardValues));
         });
     }
 
@@ -59,14 +59,14 @@ public class GameAppService implements IGameAppService {
     @Override
     public void playCard(UUID playerId, Card card, boolean hasSaidUno) {
         var message = String.format("Player %s plays %s %s", playerId, card, hasSaidUno ? "and said UNO!!!" : "");
-        logger.info(message);
+        LOGGER.info(message);
         game.playCard(playerId, card, hasSaidUno);
     }
 
     @Override
     public void drawCard(UUID playerId) {
         var message = String.format("Player %s draws a card", playerId);
-        logger.info(message);
+        LOGGER.info(message);
         game.drawCard(playerId);
     }
 
