@@ -1,12 +1,15 @@
 package domain.game;
 
-import domain.card.Card;
-import domain.card.CardType;
-import domain.player.Player;
-import domain.player.PlayerRoundIterator;
 import domain.testhelper.CardTestFactory;
 import domain.testhelper.PlayerTestFactory;
 import org.junit.jupiter.api.Test;
+
+import Modelo.card.Card;
+import Modelo.card.CardType;
+import Modelo.game.DrawPile;
+import Modelo.game.Game;
+import Modelo.player.Player;
+import Modelo.player.PlayerRoundIterator;
 
 import java.util.Arrays;
 

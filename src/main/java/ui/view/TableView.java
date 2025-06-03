@@ -1,14 +1,16 @@
 package ui.view;
 
 import application.IGameAppService;
+import ui.common.StyleUtil;
+
+import javax.swing.*;
+
 import domain.card.Card;
 import domain.common.DomainEvent;
 import domain.common.DomainEventPublisher;
 import domain.common.DomainEventSubscriber;
 import domain.game.events.CardPlayed;
-import ui.common.StyleUtil;
 
-import javax.swing.*;
 import java.awt.*;
 
 public class TableView extends JPanel implements DomainEventSubscriber {

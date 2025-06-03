@@ -3,6 +3,9 @@ package domain.card;
 import java.util.Arrays;
 import java.util.List;
 
+import Modelo.card.Card;
+import Modelo.card.CardType;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CardCounterAssertionHelper {

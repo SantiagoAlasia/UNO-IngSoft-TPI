@@ -2,21 +2,20 @@ package ui.view;
 
 import application.IGameAppService;
 import application.dto.PlayerInfoDTO;
-import domain.card.Card;
-import domain.card.CardType;
-import domain.card.WildCard;
-import domain.common.DomainEvent;
-import domain.common.DomainEventPublisher;
-import domain.common.DomainEventSubscriber;
-import domain.game.DealerService;
-import domain.game.events.CardDrawn;
-import domain.game.events.CardPlayed;
-import domain.game.events.GameOver;
 import ui.common.StyleUtil;
 
 import javax.swing.*;
-import java.awt.*;
-import java.util.stream.Collectors;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Point;
+import java.awt.Dimension;
+
+import domain.card.Card;
+import domain.common.DomainEvent;
+import domain.common.DomainEventPublisher;
+import domain.common.DomainEventSubscriber;
+import domain.game.events.CardPlayed;
+import domain.game.events.GameOver;
 
 public class PlayerView extends JPanel implements DomainEventSubscriber {
     private JLayeredPane handCardsView;
@@ -36,6 +35,11 @@ public class PlayerView extends JPanel implements DomainEventSubscriber {
         this.appService = appService;
 
         initView();
+    }
+
+    @Override
+    public void addNotify() {
+        super.addNotify();
         DomainEventPublisher.subscribe(this);
     }
 
@@ -57,46 +61,42 @@ public class PlayerView extends JPanel implements DomainEventSubscriber {
 
     private void initHandCardsView() {
         handCardsView = new JLayeredPane();
-        handCardsView.setPreferredSize(new Dimension(600, 175));
+        handCardsView.setPreferredSize(new java.awt.Dimension(600, 175));
         handCardsView.setOpaque(false);
     }
 
     private void renderHandCardsView() {
         handCardsView.removeAll();
 
-        var handCards = appService.getHandCards(player.getId()).collect(Collectors.toList());
+        java.util.List<Card> handCards = appService.getHandCards(player.getId()).collect(java.util.stream.Collectors.toList());
 
-        Point originPoint = getFirstCardPoint(handCards.size());
-        int offset = calculateOffset(handCardsView.getWidth(), handCards.size());
-
+        int width = handCardsView.getWidth() == 0 ? handCardsView.getPreferredSize().width : handCardsView.getWidth();
+        int offset = calculateOffset(width, handCards.size());
+        java.awt.Point originPoint = getFirstCardPoint(handCards.size());
         int i = 0;
-        for (var card : handCards) {
-            var cardView = new CardView(card, this::playCard);
-
+        for (Card card : handCards) {
+            CardView cardView = new CardView(card, this::playCard);
             cardView.setBounds(originPoint.x, originPoint.y,
                 cardView.getDimension().width, cardView.getDimension().height);
             handCardsView.add(cardView, i++);
             handCardsView.moveToFront(cardView);
-
             originPoint.x += offset;
         }
-
         handCardsView.revalidate();
     }
 
-    private Point getFirstCardPoint(int totalCards) {
-        Point p = new Point(0, 20);
-        if (totalCards < DealerService.TOTAL_INITIAL_HAND_CARDS) {
-            var width = handCardsView.getWidth() == 0 ? handCardsView.getPreferredSize().width : handCardsView.getWidth();
-
-            var offset = calculateOffset(width, totalCards);
+    private java.awt.Point getFirstCardPoint(int totalCards) {
+        java.awt.Point p = new java.awt.Point(0, 20);
+        if (totalCards < domain.game.DealerService.TOTAL_INITIAL_HAND_CARDS) {
+            int width = handCardsView.getWidth() == 0 ? handCardsView.getPreferredSize().width : handCardsView.getWidth();
+            int offset = calculateOffset(width, totalCards);
             p.x = (width - offset * totalCards) / 2;
         }
         return p;
     }
 
     private int calculateOffset(int width, int totalCards) {
-        if (totalCards <= DealerService.TOTAL_INITIAL_HAND_CARDS) {
+        if (totalCards <= domain.game.DealerService.TOTAL_INITIAL_HAND_CARDS) {
             return 71;
         } else {
             return (width - 100) / (totalCards - 1);
@@ -116,7 +116,7 @@ public class PlayerView extends JPanel implements DomainEventSubscriber {
     }
 
     private void toggleControlPanel() {
-        var isMyTurn = appService.getCurrentPlayer().getId().equals(player.getId());
+        boolean isMyTurn = appService.getCurrentPlayer().getId().equals(player.getId());
 
         if (appService.isGameOver()) {
             isMyTurn = false;
@@ -156,9 +156,9 @@ public class PlayerView extends JPanel implements DomainEventSubscriber {
     private void playCard(Card selectedCard) {
         Card cardToPlay = selectedCard;
 
-        if (selectedCard.getType() == CardType.WILD_COLOR || selectedCard.getType() == CardType.WILD_DRAW_FOUR) {
-            var chosenColor = ColorPicker.getInstance().show();
-            cardToPlay = new WildCard(selectedCard.getType(), chosenColor);
+        if (selectedCard.getType() == domain.card.CardType.WILD_COLOR || selectedCard.getType() == domain.card.CardType.WILD_DRAW_FOUR) {
+            domain.card.CardColor chosenColor = ColorPicker.getInstance().show();
+            cardToPlay = new domain.card.WildCard(selectedCard.getType(), chosenColor);
         }
 
         appService.playCard(player.getId(), cardToPlay, hasSaidUno);
@@ -175,7 +175,6 @@ public class PlayerView extends JPanel implements DomainEventSubscriber {
     @Override
     public void handleEvent(DomainEvent event) {
         if (event instanceof CardPlayed
-            || event instanceof CardDrawn
             || event instanceof GameOver) {
             refresh();
         }

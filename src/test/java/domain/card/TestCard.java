@@ -3,6 +3,9 @@ package domain.card;
 import domain.testhelper.CardTestFactory;
 import org.junit.jupiter.api.Test;
 
+import Modelo.card.CardColor;
+import Modelo.card.NumberCard;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class TestCard {

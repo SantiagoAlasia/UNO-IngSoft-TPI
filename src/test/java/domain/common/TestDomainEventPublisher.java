@@ -1,10 +1,14 @@
 package domain.common;
 
-import domain.card.Card;
-import domain.card.CardColor;
-import domain.game.events.CardPlayed;
 import domain.testhelper.CardTestFactory;
 import org.junit.jupiter.api.Test;
+
+import Modelo.card.Card;
+import Modelo.card.CardColor;
+import Modelo.common.DomainEvent;
+import Modelo.common.DomainEventPublisher;
+import Modelo.common.DomainEventSubscriber;
+import Modelo.game.events.CardPlayed;
 
 import java.util.UUID;
 

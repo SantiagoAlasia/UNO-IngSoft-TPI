@@ -1,14 +1,16 @@
 package domain.game;
 
-import domain.card.ActionCard;
-import domain.card.Card;
-import domain.card.CardColor;
-import domain.card.CardType;
 import domain.testhelper.CardTestFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+
+import Modelo.card.ActionCard;
+import Modelo.card.Card;
+import Modelo.card.CardColor;
+import Modelo.card.CardType;
+import Modelo.game.CardRules;
 
 import java.util.ArrayList;
 import java.util.stream.Stream;

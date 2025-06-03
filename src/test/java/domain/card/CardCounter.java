@@ -3,6 +3,10 @@ package domain.card;
 import java.util.List;
 import java.util.stream.Stream;
 
+import Modelo.card.Card;
+import Modelo.card.CardType;
+import Modelo.card.NumberCard;
+
 public class CardCounter {
     private final List<Card> cards;
 

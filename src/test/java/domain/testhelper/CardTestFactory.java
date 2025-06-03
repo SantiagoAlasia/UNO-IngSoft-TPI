@@ -1,6 +1,6 @@
 package domain.testhelper;
 
-import domain.card.*;
+import Modelo.card.*;
 
 public class CardTestFactory {
     public static NumberCard createNumberCard() {
