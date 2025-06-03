@@ -31,3 +31,10 @@ Nuevas reglas:
 1. Al jugar un "7" o un "0", el jugador puede cambiar su mano con la de otro jugador
 2. El juegador que llegue a 25 cartas o mas en mano, queda fuera de partida
 3. Las cartas como "+2", "+4", etc. Se pueden pasar al lanzar otra carta de este tipo
+
+## Convención de nombres para ramas:
+- main               → código en producción
+- develop            → rama de integración
+- feature/nombre     → nueva funcionalidad (ej: feature/turno-jugador)
+- fix/nombre         → corrección de bug (ej: fix/salto-infinito)
+- hotfix/nombre      → parche urgente (ej: hotfix/crash-inicio)
