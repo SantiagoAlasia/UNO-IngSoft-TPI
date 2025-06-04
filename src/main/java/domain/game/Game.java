@@ -89,7 +89,11 @@ public class Game extends Entity {
             case NUMBER -> {
                 checkNumberCardRule(playedCard);
                 acceptPlayedCard(playedCard, hasSaidUno);
-
+                 // ***** INICIO DE CAMBIO: Manejar la carta 6 *****
+                if (playedCard instanceof NumberCard && ((NumberCard) playedCard).getValue() == 6) {
+                    this.exchangeHandsWithNextPlayer(); // Llama al nuevo método de intercambio
+                }
+                // ***** FIN DE CAMBIO *****
                 players.next();
             }
             case SKIP -> {
@@ -268,5 +272,20 @@ public class Game extends Entity {
     private void rejectPlayedCard(Card playedCard) {
         throw new IllegalArgumentException(
             String.format("Played card %s is not valid for %s", playedCard, peekTopCard()));
+    }
+
+ private void exchangeHandsWithNextPlayer() {
+        Player currentPlayer = this.players.getCurrentPlayer();
+        Player nextPlayer = this.players.peekNextPlayer();
+
+        List<Card> currentPlayerHand = currentPlayer.getHandCardsAsList();
+        List<Card> nextPlayerHand = nextPlayer.getHandCardsAsList();
+
+        currentPlayer.setHandCards(nextPlayerHand);
+        nextPlayer.setHandCards(currentPlayerHand);
+
+        System.out.println(String.format("Hands exchanged between Player %s (%s) and Player %s (%s) due to playing a 6 card.",
+                                         currentPlayer.getName(), currentPlayer.getId(),
+                                         nextPlayer.getName(), nextPlayer.getId()));
     }
 }
