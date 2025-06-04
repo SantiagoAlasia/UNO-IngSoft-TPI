@@ -3,7 +3,7 @@ package domain.card;
 import domain.testhelper.CardTestFactory;
 import org.junit.jupiter.api.Test;
 
-import Modelo.card.CardUtil;
+import domain.card.CardUtil;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;

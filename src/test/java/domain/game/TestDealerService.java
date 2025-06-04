@@ -2,7 +2,7 @@ package domain.game;
 
 import org.junit.jupiter.api.Test;
 
-import Modelo.card.*;
+import domain.card.*;
 import Modelo.game.DealerService;
 import Modelo.game.DrawPile;
 import Modelo.player.HandCardList;

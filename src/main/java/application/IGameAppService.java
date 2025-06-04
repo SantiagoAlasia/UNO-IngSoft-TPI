@@ -26,4 +26,7 @@ public interface IGameAppService extends Serializable {
     boolean isGameOver();
 
     ImmutablePlayer getWinner();
+
+    // Add method to set player names before starting the game
+    void setPlayerNames(String name1, String name2);
 }

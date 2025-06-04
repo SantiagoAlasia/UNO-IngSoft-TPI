@@ -3,9 +3,9 @@ package domain.card;
 import java.util.List;
 import java.util.stream.Stream;
 
-import Modelo.card.Card;
-import Modelo.card.CardType;
-import Modelo.card.NumberCard;
+import domain.card.Card;
+import domain.card.CardType;
+import domain.card.NumberCard;
 
 public class CardCounter {
     private final List<Card> cards;

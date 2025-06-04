@@ -1,19 +1,18 @@
 package domain.game;
 
+import domain.card.Card;
+import domain.card.CardColor;
+import domain.card.CardUtil;
+import domain.game.DrawPile;
+import domain.game.Game;
+import domain.player.Player;
+import domain.player.PlayerRoundIterator;
 import domain.testhelper.CardTestFactory;
 import domain.testhelper.PlayerTestFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-
-import Modelo.card.Card;
-import Modelo.card.CardColor;
-import Modelo.card.CardUtil;
-import Modelo.game.DrawPile;
-import Modelo.game.Game;
-import Modelo.player.Player;
-import Modelo.player.PlayerRoundIterator;
 
 import java.util.Arrays;
 import java.util.stream.Stream;

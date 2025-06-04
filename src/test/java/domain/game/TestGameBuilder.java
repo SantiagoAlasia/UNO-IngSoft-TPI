@@ -2,9 +2,9 @@ package domain.game;
 
 import org.junit.jupiter.api.Test;
 
-import Modelo.game.GameBuilder;
-import Modelo.player.ImmutablePlayer;
-import Modelo.player.Player;
+import domain.game.GameBuilder;
+import domain.player.ImmutablePlayer;
+import domain.player.Player;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;

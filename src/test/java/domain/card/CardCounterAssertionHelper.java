@@ -3,8 +3,8 @@ package domain.card;
 import java.util.Arrays;
 import java.util.List;
 
-import Modelo.card.Card;
-import Modelo.card.CardType;
+import domain.card.Card;
+import domain.card.CardType;
 
 import static org.junit.jupiter.api.Assertions.*;
 

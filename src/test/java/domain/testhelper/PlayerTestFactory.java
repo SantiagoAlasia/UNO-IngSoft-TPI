@@ -1,7 +1,7 @@
 package domain.testhelper;
 
-import Modelo.player.HandCardList;
-import Modelo.player.Player;
+import domain.player.HandCardList;
+import domain.player.Player;
 
 public class PlayerTestFactory {
     public static Player[] createPlayers(int total) {

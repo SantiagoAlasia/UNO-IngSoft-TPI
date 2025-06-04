@@ -3,7 +3,7 @@ package domain.game;
 import domain.testhelper.CardTestFactory;
 import org.junit.jupiter.api.Test;
 
-import Modelo.game.DrawPile;
+import domain.game.DrawPile;
 
 import java.util.Arrays;
 

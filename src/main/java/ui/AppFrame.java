@@ -15,7 +15,7 @@ public class AppFrame extends JFrame {
         this.appService = appService;
 
         mainLayout = new JPanel(new CardLayout());
-        setupMenu();
+        setupPlayerSetupMenu();
         showFrame();
     }
 
@@ -27,12 +27,20 @@ public class AppFrame extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
-    private void setupMenu() {
-        MenuPanel menuPanel = new MenuPanel(e -> showGame());
-        menuPanel.setPreferredSize(new Dimension(960, 720));
-        menuPanel.setBackground(new Color(30,36,40));
-        mainLayout.add(menuPanel, "menu");
+    private void setupPlayerSetupMenu() {
+        final PlayerSetupPanel[] setupPanel = new PlayerSetupPanel[1];
+        setupPanel[0] = new PlayerSetupPanel(e -> {
+            String name1 = setupPanel[0].getPlayer1Name();
+            String name2 = setupPanel[0].getPlayer2Name();
+            appService.setPlayerNames(name1, name2); // You may need to implement this in your service
+            showGame();
+        });
+        setupPanel[0].setPreferredSize(new Dimension(960, 720));
+        setupPanel[0].setBackground(new Color(30,36,40));
+        mainLayout.add(setupPanel[0], "setup");
         add(mainLayout);
+        CardLayout cl = (CardLayout) mainLayout.getLayout();
+        cl.show(mainLayout, "setup");
     }
 
     private void showGame() {
