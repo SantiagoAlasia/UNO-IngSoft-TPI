@@ -140,7 +140,7 @@ public class Game extends Entity {
     public void drawCard(UUID playerId) {
         if (getCurrentPlayer().getId().equals(playerId)) {
             var drawnCards = drawCards(players.getCurrentPlayer(), 1);
-
+            checkPlayerCardLimit();
             tryToPlayDrawnCard(playerId, drawnCards.get(0));
         }
     }
@@ -260,6 +260,11 @@ public class Game extends Entity {
             drawnCards.add(drawnCard);
 
             player.addToHandCards(drawnCard);
+            // Chequear después de cada carta agregada
+            if (player.getHandCards().count() >= 25) {
+                checkPlayerCardLimit();
+                break;
+            }
         }
 
         return drawnCards;
@@ -268,5 +273,25 @@ public class Game extends Entity {
     private void rejectPlayedCard(Card playedCard) {
         throw new IllegalArgumentException(
             String.format("Played card %s is not valid for %s", playedCard, peekTopCard()));
+    }
+
+    private void checkPlayerCardLimit() {
+        // Expulsar al jugador si tiene 25 o más cartas y declarar ganador al otro
+        var currentPlayer = players.getCurrentPlayer();
+        long totalCards = currentPlayer.getHandCards().count();
+        if (totalCards >= 25) {
+            // Buscar al otro jugador (asume 2 jugadores)
+            Player winnerPlayer = null;
+            for (Player p : (Iterable<Player>) players.stream()::iterator) {
+                if (!p.getId().equals(currentPlayer.getId())) {
+                    winnerPlayer = p;
+                    break;
+                }
+            }
+            if (winnerPlayer != null) {
+                winner = winnerPlayer.toImmutable();
+                DomainEventPublisher.publish(new GameOver(winner));
+            }
+        }
     }
 }
