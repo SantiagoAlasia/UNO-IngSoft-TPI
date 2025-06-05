@@ -2,6 +2,8 @@ package domain.game;
 
 import domain.card.Card;
 import domain.card.CardType;
+import domain.game.DrawPile;
+import domain.game.Game;
 import domain.player.Player;
 import domain.player.PlayerRoundIterator;
 import domain.testhelper.CardTestFactory;

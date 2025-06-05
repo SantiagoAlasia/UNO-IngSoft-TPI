@@ -3,6 +3,8 @@ package domain.game;
 import domain.card.Card;
 import domain.card.CardColor;
 import domain.card.CardUtil;
+import domain.game.DrawPile;
+import domain.game.Game;
 import domain.player.Player;
 import domain.player.PlayerRoundIterator;
 import domain.testhelper.CardTestFactory;

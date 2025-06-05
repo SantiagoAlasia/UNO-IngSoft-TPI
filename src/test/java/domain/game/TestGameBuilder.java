@@ -1,8 +1,10 @@
 package domain.game;
 
+import org.junit.jupiter.api.Test;
+
+import domain.game.GameBuilder;
 import domain.player.ImmutablePlayer;
 import domain.player.Player;
-import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;

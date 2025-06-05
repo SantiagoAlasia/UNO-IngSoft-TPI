@@ -3,6 +3,8 @@ package domain.card;
 import domain.testhelper.CardTestFactory;
 import org.junit.jupiter.api.Test;
 
+import domain.card.CardUtil;
+
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

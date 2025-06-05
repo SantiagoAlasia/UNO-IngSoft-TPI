@@ -16,16 +16,11 @@ import java.util.stream.Stream;
 public class GameAppService implements IGameAppService {
     private static final Logger LOGGER = LogManager.getLogger("GameAppService");
 
-    private final Game game;
+    private Game game;
 
     public GameAppService() {
-        // Replace GameBuilder with direct Game instantiation or the correct builder if available
+        // Initial game instantiation
         game = new Game();
-        // If Game requires players to be added, add them here:
-        game.addPlayer("Player 1");
-        game.addPlayer("Player 2");
-
-        logGameInfo();
     }
 
     private void logGameInfo() {
@@ -84,5 +79,14 @@ public class GameAppService implements IGameAppService {
     @Override
     public ImmutablePlayer getWinner() {
         return game.getWinner();
+    }
+
+    @Override
+    public void setPlayerNames(String name1, String name2) {
+        game = new GameBuilder()
+            .withPlayer(name1)
+            .withPlayer(name2)
+            .build();
+        logGameInfo();
     }
 }

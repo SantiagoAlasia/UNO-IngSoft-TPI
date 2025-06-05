@@ -16,7 +16,7 @@ import java.util.stream.Stream;
 public class GameAppService implements IGameAppService {
     private static final Logger LOGGER = LogManager.getLogger("GameAppService");
 
-    private final Game game;
+    private Game game;
 
     public GameAppService() {
         game = new GameBuilder()
@@ -83,5 +83,13 @@ public class GameAppService implements IGameAppService {
     @Override
     public ImmutablePlayer getWinner() {
         return game.getWinner();
+    }
+
+    public void setPlayerNames(String name1, String name2) {
+        game = new GameBuilder()
+            .withPlayer(name1)
+            .withPlayer(name2)
+            .build();
+        logGameInfo();
     }
 }

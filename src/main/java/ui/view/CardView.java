@@ -1,13 +1,16 @@
 package ui.view;
 
-import domain.card.Card;
 import ui.common.StyleUtil;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+
+import domain.card.Card;
+
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.AffineTransform;
 import java.util.function.Consumer;
 
 public class CardView extends JPanel {
@@ -16,7 +19,7 @@ public class CardView extends JPanel {
 
     private final int cardWidth = 100;
     private final int cardHeight = 150;
-    private static final int margin = 5;
+    private static final int MARGIN = 5;
 
     private final Dimension dimension = new Dimension(cardWidth, cardHeight);
 
@@ -72,7 +75,7 @@ public class CardView extends JPanel {
         super.paintComponent(g);
 
         Graphics2D g2 = (Graphics2D) g;
-        var cardColor = StyleUtil.convertCardColor(card.getColor());
+        Color cardColor = StyleUtil.convertCardColor(card.getColor());
 
         fillBackground(g2, cardColor);
         drawWhiteOvalInCenter(g2);
@@ -85,11 +88,11 @@ public class CardView extends JPanel {
         g2.fillRect(0, 0, cardWidth, cardHeight);
 
         g2.setColor(cardColor);
-        g2.fillRect(margin, margin, cardWidth - 2 * margin, cardHeight - 2 * margin);
+        g2.fillRect(MARGIN, MARGIN, cardWidth - 2 * MARGIN, cardHeight - 2 * MARGIN);
     }
 
     private void drawWhiteOvalInCenter(Graphics2D g2) {
-        var transformer = g2.getTransform();
+        AffineTransform transformer = g2.getTransform();
         g2.setColor(Color.white);
         g2.rotate(45, (double) cardWidth * 3 / 4, (double) cardHeight * 3 / 4);
         g2.fillOval(0, cardHeight / 4, cardWidth * 3 / 5, cardHeight);
@@ -98,8 +101,8 @@ public class CardView extends JPanel {
     }
 
     private void drawValueInCenter(Graphics2D g2, Color cardColor) {
-        var defaultFont = new Font(StyleUtil.DEFAULT_FONT, Font.BOLD, cardWidth / 2 + 5);
-        var fontMetrics = this.getFontMetrics(defaultFont);
+        Font defaultFont = new Font(StyleUtil.DEFAULT_FONT, Font.BOLD, cardWidth / 2 + 5);
+        FontMetrics fontMetrics = this.getFontMetrics(defaultFont);
         int stringWidth = fontMetrics.stringWidth(value) / 2;
         int fontHeight = defaultFont.getSize() / 3;
 
@@ -109,11 +112,11 @@ public class CardView extends JPanel {
     }
 
     private void drawValueInCorner(Graphics2D g2) {
-        var defaultFont = new Font(StyleUtil.DEFAULT_FONT, Font.ITALIC, cardWidth / 5);
+        Font defaultFont = new Font(StyleUtil.DEFAULT_FONT, Font.ITALIC, cardWidth / 5);
 
         g2.setColor(Color.white);
         g2.setFont(defaultFont);
-        g2.drawString(value, margin, 5 * margin);
+        g2.drawString(value, MARGIN, 5 * MARGIN);
     }
 
     private void showHoverEffect(){
