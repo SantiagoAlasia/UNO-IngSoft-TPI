@@ -175,7 +175,8 @@ public class PlayerView extends JPanel implements DomainEventSubscriber {
     @Override
     public void handleEvent(DomainEvent event) {
         if (event instanceof CardPlayed
-            || event instanceof GameOver) {
+            || event instanceof GameOver
+            || event instanceof domain.game.events.CardDrawn) {
             refresh();
         }
     }
