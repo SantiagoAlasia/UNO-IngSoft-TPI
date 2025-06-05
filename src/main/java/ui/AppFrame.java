@@ -13,9 +13,8 @@ public class AppFrame extends JFrame {
 
     public AppFrame(IGameAppService appService){
         this.appService = appService;
-
         mainLayout = new JPanel(new CardLayout());
-        setupPlayerSetupMenu();
+        setupMenuPanel();
         showFrame();
     }
 
@@ -25,6 +24,18 @@ public class AppFrame extends JFrame {
         setLocation(200, 100);
         pack();
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    }
+
+    private void setupMenuPanel() {
+        MenuPanel menuPanel = new MenuPanel(e -> {
+            setupPlayerSetupMenu();
+        });
+        menuPanel.setPreferredSize(new Dimension(960, 720));
+        menuPanel.setBackground(new Color(30,36,40));
+        mainLayout.add(menuPanel, "menu");
+        add(mainLayout);
+        CardLayout cl = (CardLayout) mainLayout.getLayout();
+        cl.show(mainLayout, "menu");
     }
 
     private void setupPlayerSetupMenu() {
@@ -38,7 +49,6 @@ public class AppFrame extends JFrame {
         setupPanel[0].setPreferredSize(new Dimension(960, 720));
         setupPanel[0].setBackground(new Color(30,36,40));
         mainLayout.add(setupPanel[0], "setup");
-        add(mainLayout);
         CardLayout cl = (CardLayout) mainLayout.getLayout();
         cl.show(mainLayout, "setup");
     }
