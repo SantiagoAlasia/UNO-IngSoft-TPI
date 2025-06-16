@@ -55,18 +55,19 @@ public class DealerService {
     }
 
     public static HandCardList[] dealInitialHandCards(DrawPile drawPile, int totalPlayers) {
+        int totalCardsNeeded = totalPlayers * TOTAL_INITIAL_HAND_CARDS;
+        if (drawPile.getSize() < totalCardsNeeded) {
+            throw new IllegalStateException("No hay suficientes cartas en el mazo para repartir a todos los jugadores.");
+        }
         var handCardLists = new HandCardList[totalPlayers];
-
         for (int i = 0; i < TOTAL_INITIAL_HAND_CARDS; i++) {
             for (int p = 0; p < totalPlayers; p++) {
                 if (i == 0) {
                     handCardLists[p] = new HandCardList();
                 }
-
                 handCardLists[p].addCard(drawPile.drawCard());
             }
         }
-
         return handCardLists;
     }
 }

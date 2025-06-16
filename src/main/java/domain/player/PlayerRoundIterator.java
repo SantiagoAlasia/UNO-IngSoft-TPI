@@ -43,4 +43,11 @@ public class PlayerRoundIterator {
         var increment = direction == Direction.CLOCKWISE ? 1 : -1;
         return (players.length + current + increment) % players.length;
     }
+
+    /**
+     * Devuelve el índice del jugador actual.
+     */
+    public int getCurrentIndex() {
+        return current;
+    }
 }

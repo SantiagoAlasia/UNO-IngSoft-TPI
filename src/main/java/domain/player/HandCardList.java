@@ -35,9 +35,11 @@ public class HandCardList {
     }
 
     public boolean hasCard(Card card) {
-        return CardUtil.isWildCard(card)
-            ? getCardStream().anyMatch(c -> c.getType() == card.getType())
-            : getCardStream().anyMatch(c -> c.equals(card));
+        // Compara por tipo y color para todas las cartas, no solo por equals
+        return getCardStream().anyMatch(c ->
+            c.getType() == card.getType() &&
+            (c.getColor() == null || card.getColor() == null || c.getColor() == card.getColor())
+        );
     }
 
     public int size() {
