@@ -1,43 +1,43 @@
 package domain.common;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
 
-public class DomainEventPublisher {
+// Implementación de la interfaz Publisher
+public class DomainEventPublisher implements Publisher { // Ahora implementa Publisher
     private static final ThreadLocal<List<DomainEventSubscriber>> subscribers = ThreadLocal.withInitial(ArrayList::new);
-
     private static final ThreadLocal<Boolean> isPublishing = ThreadLocal.withInitial(() -> Boolean.FALSE);
+
+
 
     private DomainEventPublisher() {
     }
 
-    public static void subscribe(DomainEventSubscriber subscriber) {
+    @Override 
+    public void subscribe(DomainEventSubscriber subscriber) {
         if (Boolean.TRUE.equals(isPublishing.get())) {
             return;
         }
-
         var registeredSubscribers = subscribers.get();
         registeredSubscribers.add(subscriber);
     }
 
-    public static void unsubscribe(DomainEventSubscriber subscriber) {
+    @Override
+    public void unsubscribe(DomainEventSubscriber subscriber) {
         if(Boolean.TRUE.equals(isPublishing.get())){
             return;
         }
-
         subscribers.get().remove(subscriber);
     }
 
-    public static void publish(final DomainEvent event) {
+    @Override
+    public void publish(final DomainEvent event) {
         if (Boolean.TRUE.equals(isPublishing.get())) {
             return;
         }
-
         try {
             isPublishing.set(Boolean.TRUE);
-
             var registeredSubscribers = subscribers.get();
-
             for (var subscriber : registeredSubscribers) {
                 subscriber.handleEvent(event);
             }
@@ -46,7 +46,8 @@ public class DomainEventPublisher {
         }
     }
 
-    public static void reset() {
+    @Override
+    public void reset() {
         subscribers.remove();
         isPublishing.remove();
     }
