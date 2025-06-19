@@ -7,8 +7,8 @@ import ui.common.StyleUtil;
 import javax.swing.*;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Point;
-import java.awt.Dimension;
+//import java.awt.Point;
+//import java.awt.Dimension;
 
 import domain.card.Card;
 import domain.common.DomainEvent;
@@ -40,7 +40,7 @@ public class PlayerView extends JPanel implements DomainEventSubscriber {
     @Override
     public void addNotify() {
         super.addNotify();
-        DomainEventPublisher.subscribe(this);
+        DomainEventPublisher.getInstance().subscribe(this);
     }
 
     private void initView() {
@@ -180,4 +180,13 @@ public class PlayerView extends JPanel implements DomainEventSubscriber {
             refresh();
         }
     }
+
+    // -----------------------------
+    // Patrón Observer en la UI
+    // -----------------------------
+    // Esta vista de la mano del jugador se suscribe a los eventos del juego
+    // implementando DomainEventSubscriber. Cuando ocurre un evento relevante
+    // (como una carta jugada o el fin del juego), la vista se actualiza automáticamente.
+    //
+    // Esto permite desacoplar la lógica de la UI del motor del juego, siguiendo el patrón Observer.
 }

@@ -3,14 +3,28 @@ package domain.common;
 import java.util.List;
 import java.util.ArrayList;
 
+// -----------------------------
+// Patrón Observer en eventos de juego
+// -----------------------------
+// Esta clase implementa el patrón Observer para la publicación y suscripción
+// de eventos de dominio en el juego UNO. Permite que múltiples componentes
+// (como la UI o el motor de juego) se suscriban a eventos y reaccionen cuando
+// ocurren cambios importantes (por ejemplo, una carta jugada o el fin del juego).
+//
+// Los suscriptores implementan DomainEventSubscriber y se registran aquí.
+// Cuando ocurre un evento, se notifica a todos los suscriptores.
+
 // Implementación de la interfaz Publisher
 public class DomainEventPublisher implements Publisher { // Ahora implementa Publisher
     private static final ThreadLocal<List<DomainEventSubscriber>> subscribers = ThreadLocal.withInitial(ArrayList::new);
     private static final ThreadLocal<Boolean> isPublishing = ThreadLocal.withInitial(() -> Boolean.FALSE);
-
-
+    private static final DomainEventPublisher INSTANCE = new DomainEventPublisher();
 
     private DomainEventPublisher() {
+    }
+
+    public static DomainEventPublisher getInstance() {
+        return INSTANCE;
     }
 
     @Override 

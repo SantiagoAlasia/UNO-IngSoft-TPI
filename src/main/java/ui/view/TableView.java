@@ -28,7 +28,7 @@ public class TableView extends JPanel implements DomainEventSubscriber {
         initTable();
         initInfoView();
 
-        DomainEventPublisher.subscribe(this);
+        DomainEventPublisher.getInstance().subscribe(this);
     }
 
     private void initTable(){
@@ -76,4 +76,14 @@ public class TableView extends JPanel implements DomainEventSubscriber {
             initTable();
         }
     }
+
+    // -----------------------------
+    // Patrón Observer en la UI
+    // -----------------------------
+    // Esta vista de la mesa de juego se suscribe a los eventos del juego
+    // implementando DomainEventSubscriber. Cuando se recibe un evento (por ejemplo,
+    // una carta jugada), la vista se actualiza automáticamente.
+    //
+    // Así, la UI reacciona a los cambios en el estado del juego sin acoplamiento directo,
+    // cumpliendo el patrón Observer.
 }
