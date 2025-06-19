@@ -1,9 +1,6 @@
 package ui.view;
 
 import application.IGameAppService;
-
-import javax.swing.*;
-
 import domain.common.DomainEvent;
 import domain.common.DomainEventPublisher;
 import domain.common.DomainEventSubscriber;
@@ -11,6 +8,7 @@ import domain.game.events.CardDrawn;
 import domain.game.events.CardPlayed;
 import domain.game.events.GameOver;
 
+import javax.swing.*;
 import java.awt.*;
 
 public class GameStatusView extends JPanel implements DomainEventSubscriber {
@@ -29,7 +27,7 @@ public class GameStatusView extends JPanel implements DomainEventSubscriber {
 
         updateStatus();
 
-        DomainEventPublisher.subscribe(this);
+        DomainEventPublisher.getInstance().subscribe(this);
     }
 
     @Override
