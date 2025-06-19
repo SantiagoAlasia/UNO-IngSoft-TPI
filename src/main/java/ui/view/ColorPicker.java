@@ -1,8 +1,9 @@
 package ui.view;
 
+import javax.swing.*;
+
 import domain.card.CardColor;
 
-import javax.swing.*;
 import java.util.ArrayList;
 
 public class ColorPicker {
@@ -11,7 +12,7 @@ public class ColorPicker {
     private ColorPicker() {
         colors = new ArrayList<>();
 
-        for (var color : CardColor.values()) {
+        for (CardColor color : CardColor.values()) {
             colors.add(color.name());
         }
     }

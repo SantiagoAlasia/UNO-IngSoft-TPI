@@ -27,7 +27,7 @@ public class GameStatusView extends JPanel implements DomainEventSubscriber {
 
         updateStatus();
 
-        DomainEventPublisher.subscribe(this);
+        DomainEventPublisher.getInstance().subscribe(this);
     }
 
     @Override
@@ -89,4 +89,13 @@ public class GameStatusView extends JPanel implements DomainEventSubscriber {
             updateStatus();
         }
     }
+
+    // -----------------------------
+    // Patrón Observer en la UI
+    // -----------------------------
+    // Esta vista muestra el estado del juego y se suscribe a los eventos de dominio.
+    // Cuando ocurre un evento (carta jugada, carta robada, fin de juego), actualiza
+    // la información mostrada al usuario automáticamente.
+    //
+    // Así, la UI se mantiene sincronizada con el estado del juego usando el patrón Observer.
 }

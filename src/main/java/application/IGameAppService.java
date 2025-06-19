@@ -1,13 +1,14 @@
 package application;
 
 import application.dto.PlayerInfoDTO;
-import domain.card.Card;
-import domain.player.ImmutablePlayer;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Stream;
+
+import domain.card.Card;
+import domain.player.ImmutablePlayer;
 
 public interface IGameAppService extends Serializable {
     List<PlayerInfoDTO> getPlayerInfos();
@@ -25,4 +26,7 @@ public interface IGameAppService extends Serializable {
     boolean isGameOver();
 
     ImmutablePlayer getWinner();
+
+    // Add method to set player names before starting the game
+    void setPlayerNames(String name1, String name2);
 }

@@ -3,6 +3,8 @@ package domain.game;
 import domain.card.Card;
 import domain.card.CardColor;
 import domain.card.CardUtil;
+//import domain.game.DrawPile;
+//import domain.game.Game;
 import domain.player.Player;
 import domain.player.PlayerRoundIterator;
 import domain.testhelper.CardTestFactory;
@@ -17,6 +19,10 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Test de la lógica de juego y reacción a eventos.
+ * Incluye validaciones del patrón Observer en la interacción entre el juego y los suscriptores de eventos.
+ */
 class TestGamePlay {
     private final Player[] players = PlayerTestFactory.createPlayers(4);
     private final PlayerRoundIterator playersIterator = new PlayerRoundIterator(players);

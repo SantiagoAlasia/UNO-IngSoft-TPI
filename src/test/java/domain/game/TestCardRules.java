@@ -1,5 +1,15 @@
 package domain.game;
 
+/**
+ * Test unitarios de la lógica de validación de jugadas según las reglas de UNO.
+ * Valida el uso del patrón Strategy aplicado a las cartas (cada tipo de carta tiene su propia lógica de jugada).
+ * 
+ * Casos cubiertos:
+ * - Validación de jugadas válidas e inválidas para cartas numéricas y de acción
+ * - Validación de cartas comodín con y sin color elegido
+ * - Cobertura de combinaciones de cartas según las reglas oficiales
+ */
+
 import domain.card.ActionCard;
 import domain.card.Card;
 import domain.card.CardColor;
@@ -17,7 +27,10 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class TestCardRules {
-
+    /**
+     * Verifica que una carta numérica puede ser jugada sobre otra carta válida según las reglas de UNO.
+     * Se prueban combinaciones de valor y color, así como cartas especiales compatibles.
+     */
     @ParameterizedTest
     @MethodSource("provideValidTopCardsForNumberCard")
     void WhenNumberCardPlayed_ShouldBeValid(Card topCard) {
@@ -41,6 +54,9 @@ class TestCardRules {
         );
     }
 
+    /**
+     * Verifica que una carta numérica NO puede ser jugada sobre cartas incompatibles.
+     */
     @ParameterizedTest
     @MethodSource("provideInvalidTopCardsForNumberCard")
     void WhenMisMatchNumberCardPlayed_ShouldBeInvalid(Card topCard) {
@@ -66,6 +82,9 @@ class TestCardRules {
         );
     }
 
+    /**
+     * Verifica que una carta de acción (Skip, Reverse, Draw Two) puede ser jugada sobre cartas compatibles.
+     */
     @ParameterizedTest
     @MethodSource("provideValidTopCardsForActionCard")
     void WhenActionCardPlayed_ShouldBeValid(Card cardToPlay, Card topCard) {
@@ -93,6 +112,9 @@ class TestCardRules {
         return arguments.stream();
     }
 
+    /**
+     * Verifica que una carta de acción NO puede ser jugada sobre cartas incompatibles.
+     */
     @ParameterizedTest
     @MethodSource("provideInvalidTopCardsForActionCard")
     void WhenMismatchActionCardPlayed_ShouldBeInvalid(Card cardToPlay, Card topCard) {
@@ -125,6 +147,9 @@ class TestCardRules {
         return arguments.stream();
     }
 
+    /**
+     * Verifica que una carta comodín con color elegido es válida para jugar.
+     */
     @Test
     void WhenWildCardWithChosenColor_ShouldBeValid() {
         var wildCard = CardTestFactory.createWildColorCard(CardColor.RED);
@@ -134,6 +159,9 @@ class TestCardRules {
         assertTrue(result, wildCard.toString());
     }
 
+    /**
+     * Verifica que una carta comodín sin color elegido NO es válida para jugar.
+     */
     @Test
     void WhenWildCardWithoutColor_ShouldBeInvalid() {
         var wildCard = CardTestFactory.createWildColorCard();

@@ -24,6 +24,9 @@ public class Game extends Entity {
 
     private ImmutablePlayer winner = null;
 
+    private int accumulatedPenalty = 0;
+    private CardType accumulatedPenaltyType = null;
+
     public Game(DrawPile drawPile, PlayerRoundIterator players) {
         super();
         this.drawPile = drawPile;
@@ -85,63 +88,83 @@ public class Game extends Entity {
 
         validatePlayedCard(playerId, playedCard);
 
+        // Si hay penalización acumulada, solo se puede responder con la misma carta
+        if (accumulatedPenalty > 0 && !isStackableResponse(playedCard)) {
+            // No puede apilar, aplica penalización y termina turno
+            drawCards(players.getCurrentPlayer(), accumulatedPenalty);
+            resetPenalty();
+            players.next();
+            DomainEventPublisher.getInstance().publish(new CardDrawn(playerId));
+            return;
+        }
+
         switch (playedCard.getType()) {
             case NUMBER -> {
                 checkNumberCardRule(playedCard);
                 acceptPlayedCard(playedCard, hasSaidUno);
-
+                resetPenalty();
                 players.next();
             }
             case SKIP -> {
                 checkActionCardRule(playedCard);
                 acceptPlayedCard(playedCard, hasSaidUno);
-
+                resetPenalty();
                 players.next();
                 players.next();
             }
             case REVERSE -> {
                 checkActionCardRule(playedCard);
                 acceptPlayedCard(playedCard, hasSaidUno);
-
+                resetPenalty();
                 reverse();
             }
             case DRAW_TWO -> {
                 checkActionCardRule(playedCard);
                 acceptPlayedCard(playedCard, hasSaidUno);
-
-                players.next();
-                drawTwoCards(players.getCurrentPlayer());
+                accumulatedPenalty += 2;
+                accumulatedPenaltyType = CardType.DRAW_TWO;
                 players.next();
             }
             case WILD_COLOR -> {
                 checkWildCardRule(playedCard);
                 acceptPlayedCard(playedCard, hasSaidUno);
-
+                resetPenalty();
                 players.next();
             }
             case WILD_DRAW_FOUR -> {
                 checkWildCardRule(playedCard);
                 acceptPlayedCard(playedCard, hasSaidUno);
-
-                players.next();
-                drawFourCards(players.getCurrentPlayer());
+                accumulatedPenalty += 4;
+                accumulatedPenaltyType = CardType.WILD_DRAW_FOUR;
                 players.next();
             }
             default -> rejectPlayedCard(playedCard);
         }
 
-        DomainEventPublisher.publish(new CardPlayed(playerId, playedCard));
+        DomainEventPublisher.getInstance().publish(new CardPlayed(playerId, playedCard));
 
         if (isOver()) {
-            DomainEventPublisher.publish(new GameOver(winner));
+            DomainEventPublisher.getInstance().publish(new GameOver(winner));
         }
     }
 
     public void drawCard(UUID playerId) {
         if (getCurrentPlayer().getId().equals(playerId)) {
+            // Si hay penalización acumulada, el jugador debe juntar todas las cartas y termina su turno
+            if (accumulatedPenalty > 0) {
+                drawCards(players.getCurrentPlayer(), accumulatedPenalty);
+                resetPenalty();
+                players.next();
+                DomainEventPublisher.getInstance().publish(new CardDrawn(playerId));
+                return;
+            }
             var drawnCards = drawCards(players.getCurrentPlayer(), 1);
-
-            tryToPlayDrawnCard(playerId, drawnCards.get(0));
+            try {
+                tryToPlayDrawnCard(playerId, drawnCards.get(0));
+            } catch (Exception ex) {
+                players.next();
+                DomainEventPublisher.getInstance().publish(new CardDrawn(playerId));
+            }
         }
     }
 
@@ -153,6 +176,10 @@ public class Game extends Entity {
         return winner;
     }
 
+    public int getAccumulatedPenalty() {
+        return accumulatedPenalty;
+    }
+
     private void tryToPlayDrawnCard(UUID playerId, Card drawnCard) {
         try {
             var cardToPlay = CardUtil.isWildCard(drawnCard)
@@ -161,9 +188,13 @@ public class Game extends Entity {
 
             playCard(playerId, cardToPlay);
         } catch (Exception ex) {
-            // Drawn couldn't be played, so just switch turn
+            // Si no se puede jugar, pero hay penalización, se aplica
+            if (accumulatedPenalty > 0) {
+                drawCards(players.getCurrentPlayer(), accumulatedPenalty);
+                resetPenalty();
+            }
             players.next();
-            DomainEventPublisher.publish(new CardDrawn(playerId));
+            DomainEventPublisher.getInstance().publish(new CardDrawn(playerId));
         }
     }
 
@@ -247,10 +278,6 @@ public class Game extends Entity {
         drawCards(player, 2);
     }
 
-    private void drawFourCards(Player player) {
-        drawCards(player, 4);
-    }
-
     private List<Card> drawCards(Player player, int total) {
         int min = Math.min(total, drawPile.getSize());
         var drawnCards = new ArrayList<Card>();
@@ -258,7 +285,6 @@ public class Game extends Entity {
         for (int i = 0; i < min; i++) {
             var drawnCard = drawPile.drawCard();
             drawnCards.add(drawnCard);
-
             player.addToHandCards(drawnCard);
         }
 
@@ -269,4 +295,25 @@ public class Game extends Entity {
         throw new IllegalArgumentException(
             String.format("Played card %s is not valid for %s", playedCard, peekTopCard()));
     }
+
+    private boolean isStackableResponse(Card card) {
+        return (accumulatedPenaltyType == CardType.DRAW_TWO && card.getType() == CardType.DRAW_TWO)
+            || (accumulatedPenaltyType == CardType.WILD_DRAW_FOUR && card.getType() == CardType.WILD_DRAW_FOUR);
+    }
+
+    private void resetPenalty() {
+        accumulatedPenalty = 0;
+        accumulatedPenaltyType = null;
+    }
+
+    // -----------------------------
+    // Patrón Observer y Strategy en el juego
+    // -----------------------------
+    // Esta clase representa la lógica principal del juego UNO.
+    // Utiliza el patrón Observer para notificar a la UI y otros componentes
+    // cuando ocurren eventos importantes (cartas jugadas, fin de juego, etc.)
+    // mediante DomainEventPublisher.
+    //
+    // Además, delega la validación de jugadas a CardRules y a las subclases de Card,
+    // aplicando el patrón Strategy para que cada tipo de carta tenga su propia lógica.
 }

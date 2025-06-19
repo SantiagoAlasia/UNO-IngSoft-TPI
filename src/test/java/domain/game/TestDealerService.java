@@ -1,8 +1,16 @@
 package domain.game;
 
-import domain.card.*;
-import domain.player.HandCardList;
+/**
+ * Test de la lógica de barajado y reparto inicial de cartas a los jugadores.
+ */
+
 import org.junit.jupiter.api.Test;
+
+import domain.card.*;
+//import domain.game.DealerService;
+//import domain.game.DrawPile;
+import domain.player.HandCardList;
+import domain.card.CardCounterAssertionHelper;
 
 import java.util.ArrayList;
 import java.util.List;

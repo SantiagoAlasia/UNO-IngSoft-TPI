@@ -2,6 +2,17 @@ package domain.card;
 
 import java.util.Objects;
 
+// -----------------------------
+// Patrón Strategy en cartas UNO
+// -----------------------------
+// Esta clase representa una carta comodín (Wild o Wild Draw Four) en UNO.
+// Forma parte del patrón Strategy porque encapsula el comportamiento específico
+// de las cartas comodín, permitiendo que la lógica de jugada y validación sea
+// diferente a la de otras cartas.
+//
+// El sistema puede tratar todas las cartas de forma polimórfica (como Card),
+// pero cada subclase implementa su propia lógica.
+
 public class WildCard extends AbstractCard {
     public WildCard(CardType type) {
         super(type, null);
