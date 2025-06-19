@@ -17,12 +17,8 @@ jobs:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
           restore-keys: ${{ runner.os }}-gradle
-<<<<<<< HEAD
+
       - name: Run tests
         run: ./gradlew test --info
       - name: Build JAR
         run: ./gradlew  build
-=======
-      - name: Build and test
-        run: ./gradlew test --info
->>>>>>> main
