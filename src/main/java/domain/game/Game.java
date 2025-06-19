@@ -94,7 +94,7 @@ public class Game extends Entity {
             drawCards(players.getCurrentPlayer(), accumulatedPenalty);
             resetPenalty();
             players.next();
-            DomainEventPublisher.publish(new CardDrawn(playerId));
+            DomainEventPublisher.getInstance().publish(new CardDrawn(playerId));
             return;
         }
 
@@ -141,10 +141,10 @@ public class Game extends Entity {
             default -> rejectPlayedCard(playedCard);
         }
 
-        DomainEventPublisher.publish(new CardPlayed(playerId, playedCard));
+        DomainEventPublisher.getInstance().publish(new CardPlayed(playerId, playedCard));
 
         if (isOver()) {
-            DomainEventPublisher.publish(new GameOver(winner));
+            DomainEventPublisher.getInstance().publish(new GameOver(winner));
         }
     }
 
@@ -155,7 +155,7 @@ public class Game extends Entity {
                 drawCards(players.getCurrentPlayer(), accumulatedPenalty);
                 resetPenalty();
                 players.next();
-                DomainEventPublisher.publish(new CardDrawn(playerId));
+                DomainEventPublisher.getInstance().publish(new CardDrawn(playerId));
                 return;
             }
             var drawnCards = drawCards(players.getCurrentPlayer(), 1);
@@ -163,7 +163,7 @@ public class Game extends Entity {
                 tryToPlayDrawnCard(playerId, drawnCards.get(0));
             } catch (Exception ex) {
                 players.next();
-                DomainEventPublisher.publish(new CardDrawn(playerId));
+                DomainEventPublisher.getInstance().publish(new CardDrawn(playerId));
             }
         }
     }
@@ -174,6 +174,10 @@ public class Game extends Entity {
 
     public ImmutablePlayer getWinner() {
         return winner;
+    }
+
+    public int getAccumulatedPenalty() {
+        return accumulatedPenalty;
     }
 
     private void tryToPlayDrawnCard(UUID playerId, Card drawnCard) {
@@ -190,7 +194,7 @@ public class Game extends Entity {
                 resetPenalty();
             }
             players.next();
-            DomainEventPublisher.publish(new CardDrawn(playerId));
+            DomainEventPublisher.getInstance().publish(new CardDrawn(playerId));
         }
     }
 
@@ -301,4 +305,15 @@ public class Game extends Entity {
         accumulatedPenalty = 0;
         accumulatedPenaltyType = null;
     }
+
+    // -----------------------------
+    // Patrón Observer y Strategy en el juego
+    // -----------------------------
+    // Esta clase representa la lógica principal del juego UNO.
+    // Utiliza el patrón Observer para notificar a la UI y otros componentes
+    // cuando ocurren eventos importantes (cartas jugadas, fin de juego, etc.)
+    // mediante DomainEventPublisher.
+    //
+    // Además, delega la validación de jugadas a CardRules y a las subclases de Card,
+    // aplicando el patrón Strategy para que cada tipo de carta tenga su propia lógica.
 }

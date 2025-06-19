@@ -1,10 +1,9 @@
 package domain;
 
+import domain.card.CardColor;
+import domain.player.HandCardList;
 import domain.testhelper.CardTestFactory;
 import org.junit.jupiter.api.Test;
-
-import Modelo.card.CardColor;
-import Modelo.player.HandCardList;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
