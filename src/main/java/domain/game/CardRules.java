@@ -3,6 +3,16 @@ package domain.game;
 import domain.card.*;
 
 public class CardRules {
+    // -----------------------------
+    // Patrón Strategy en cartas UNO
+    // -----------------------------
+    // Esta clase utilitaria centraliza la lógica de validación de jugadas según
+    // el tipo de carta. Cada método representa una estrategia diferente para
+    // validar si una carta puede ser jugada sobre otra, según las reglas de UNO.
+    //
+    // Así, el comportamiento de cada tipo de carta es intercambiable y extensible,
+    // cumpliendo con el patrón Strategy.
+
     private CardRules(){
         throw new IllegalStateException("Utility class");
     }

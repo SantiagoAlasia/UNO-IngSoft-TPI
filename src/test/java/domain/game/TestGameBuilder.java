@@ -1,12 +1,17 @@
 package domain.game;
 
-import domain.player.ImmutablePlayer;
-import domain.player.Player;
 import org.junit.jupiter.api.Test;
+
+//import domain.game.GameBuilder;
+import domain.player.ImmutablePlayer;
+//import domain.player.Player;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+/**
+ * Test de la construcción de objetos Game, validando restricciones como el número mínimo y máximo de jugadores.
+ */
 class TestGameBuilder {
 
     @Test

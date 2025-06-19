@@ -2,6 +2,8 @@ package domain.game;
 
 import domain.card.Card;
 import domain.card.CardType;
+//import domain.game.DrawPile;
+//import domain.game.Game;
 import domain.player.Player;
 import domain.player.PlayerRoundIterator;
 import domain.testhelper.CardTestFactory;
@@ -13,6 +15,10 @@ import java.util.Arrays;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+/**
+ * Test de los eventos y estados al iniciar el juego.
+ * Incluye validaciones del patrón Observer en la notificación de eventos de inicio de juego.
+ */
 class TestGameStart {
     private final PlayerRoundIterator players = new PlayerRoundIterator(PlayerTestFactory.createPlayers(3));
 

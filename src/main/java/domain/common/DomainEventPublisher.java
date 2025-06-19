@@ -1,43 +1,57 @@
 package domain.common;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
 
-public class DomainEventPublisher {
+// -----------------------------
+// Patrón Observer en eventos de juego
+// -----------------------------
+// Esta clase implementa el patrón Observer para la publicación y suscripción
+// de eventos de dominio en el juego UNO. Permite que múltiples componentes
+// (como la UI o el motor de juego) se suscriban a eventos y reaccionen cuando
+// ocurren cambios importantes (por ejemplo, una carta jugada o el fin del juego).
+//
+// Los suscriptores implementan DomainEventSubscriber y se registran aquí.
+// Cuando ocurre un evento, se notifica a todos los suscriptores.
+
+// Implementación de la interfaz Publisher
+public class DomainEventPublisher implements Publisher { // Ahora implementa Publisher
     private static final ThreadLocal<List<DomainEventSubscriber>> subscribers = ThreadLocal.withInitial(ArrayList::new);
-
     private static final ThreadLocal<Boolean> isPublishing = ThreadLocal.withInitial(() -> Boolean.FALSE);
+    private static final DomainEventPublisher INSTANCE = new DomainEventPublisher();
 
     private DomainEventPublisher() {
     }
 
-    public static void subscribe(DomainEventSubscriber subscriber) {
+    public static DomainEventPublisher getInstance() {
+        return INSTANCE;
+    }
+
+    @Override 
+    public void subscribe(DomainEventSubscriber subscriber) {
         if (Boolean.TRUE.equals(isPublishing.get())) {
             return;
         }
-
         var registeredSubscribers = subscribers.get();
         registeredSubscribers.add(subscriber);
     }
 
-    public static void unsubscribe(DomainEventSubscriber subscriber) {
+    @Override
+    public void unsubscribe(DomainEventSubscriber subscriber) {
         if(Boolean.TRUE.equals(isPublishing.get())){
             return;
         }
-
         subscribers.get().remove(subscriber);
     }
 
-    public static void publish(final DomainEvent event) {
+    @Override
+    public void publish(final DomainEvent event) {
         if (Boolean.TRUE.equals(isPublishing.get())) {
             return;
         }
-
         try {
             isPublishing.set(Boolean.TRUE);
-
             var registeredSubscribers = subscribers.get();
-
             for (var subscriber : registeredSubscribers) {
                 subscriber.handleEvent(event);
             }
@@ -46,7 +60,8 @@ public class DomainEventPublisher {
         }
     }
 
-    public static void reset() {
+    @Override
+    public void reset() {
         subscribers.remove();
         isPublishing.remove();
     }
