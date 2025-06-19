@@ -18,9 +18,16 @@ import java.util.ArrayList;
 public class DomainEventPublisher implements Publisher { // Ahora implementa Publisher
     private static final ThreadLocal<List<DomainEventSubscriber>> subscribers = ThreadLocal.withInitial(ArrayList::new);
     private static final ThreadLocal<Boolean> isPublishing = ThreadLocal.withInitial(() -> Boolean.FALSE);
-    private static final DomainEventPublisher INSTANCE = new DomainEventPublisher();
+    private static final DomainEventPublisher instance = new DomainEventPublisher();
+
+
 
     private DomainEventPublisher() {
+        // private constructor to prevent instantiation
+    }
+
+    public static DomainEventPublisher getInstance() {
+        return instance;    
     }
 
     public static DomainEventPublisher getInstance() {
